@@ -1,0 +1,15 @@
+{
+      "name": "自动评价",
+      "version": "1",
+      "manifest_version": 2,
+      "permissions": 
+      [    
+          "https:/*.taobao.com/"
+      ],
+      "content_scripts": [
+        {
+          "matches": ["https://*.taobao.com/*"],
+          "js": [ "torate.js"]
+        }
+      ]
+}
