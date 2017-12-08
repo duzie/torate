@@ -10,10 +10,13 @@ if(location.href.indexOf('tabCode=waitRate') > 0){
 
 if(location.href.indexOf('remarkBuyer.jhtml') > 0){
     initjq();
-    $('.radiolabel :checkbox').attr('checked','checked');
-    $('.good :radio').attr('checked','checked');
-    $('textarea').val('下次再来啊');
-    $('.submitbox button').click();
+    $.post('https://www.tuling123.com/openapi/api',{'key':'cb5d570ecefca152667625b3c66d8b9c','info':'讲个笑话'},function(data){
+        $('.radiolabel :checkbox').attr('checked','checked');
+        $('.good :radio').attr('checked','checked');
+        $('textarea').val('下次再来啊,送条笑话。 '+ data.text);
+        $('.submitbox button').click();
+    });
+    
 }
 
 if(location.href.indexOf('remarkBuyer.htm') > 0){

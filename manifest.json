@@ -4,7 +4,8 @@
       "manifest_version": 2,
       "permissions": 
       [    
-          "https:/*.taobao.com/"
+          "https://*.taobao.com/",
+          "*://*.tuling123.com/"
       ],
       "content_scripts": [
         {
