@@ -1,6 +1,6 @@
-if(location.href.indexOf('tabCode=waitRate') > 0){
+if (location.href.indexOf('tabCode=waitRate') > 0) {
     initjq();
-    $('.suborder-mod__order-table___2SEhF a:contains("评价")').each(function(i,t){
+    $('.suborder-mod__order-table___2SEhF a:contains("评价")').each(function (i, t) {
         $(t)[0].click();
     });
     setTimeout(function(){
@@ -8,19 +8,26 @@ if(location.href.indexOf('tabCode=waitRate') > 0){
     },1000 * 60);
 }
 
-if(location.href.indexOf('remarkBuyer.jhtml') > 0){
+if (location.href.indexOf('remarkBuyer.jhtml') > 0) {
     initjq();
-    $.post('https://www.tuling123.com/openapi/api',{'key':'cb5d570ecefca152667625b3c66d8b9c','info':'讲个笑话'},function(data){
-        $('.radiolabel :checkbox').attr('checked','checked');
-        $('.good :radio').attr('checked','checked');
-        $('textarea').val('下次再来啊,送条笑话。 '+ data.text);
+    $.post('https://www.tuling123.com/openapi/api', { 'key': 'cb5d570ecefca152667625b3c66d8b9c', 'info': '讲个笑话' }, function (data) {
+        $('.radiolabel :checkbox').attr('checked', 'checked');
+        $('.good :radio').attr('checked', 'checked');
+        $('textarea').val('下次再来啊,送条笑话。 ' + data.text);
         $('.submitbox button').click();
     });
-    
+
 }
 
 if (location.href.indexOf('remarkBuyer.htm') > 0) {
     chrome.runtime.sendMessage({});
+}
+
+if (location.host == "login.taobao.com") {
+    initjq();
+    $('#TPL_username_1').val("");
+    $('#TPL_password_1').val("");
+    $('#J_SubmitStatic').click();
 }
 
 
