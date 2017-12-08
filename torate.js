@@ -19,9 +19,8 @@ if(location.href.indexOf('remarkBuyer.jhtml') > 0){
     
 }
 
-if(location.href.indexOf('remarkBuyer.htm') > 0){
-    top.location.href='about:blank';
-    top.close();
+if (location.href.indexOf('remarkBuyer.htm') > 0) {
+    chrome.runtime.sendMessage({});
 }
 
 

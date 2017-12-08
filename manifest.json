@@ -1,16 +1,27 @@
 {
-      "name": "自动评价",
-      "version": "1",
-      "manifest_version": 2,
-      "permissions": 
-      [    
-          "https://*.taobao.com/",
-          "*://*.tuling123.com/"
+  "name": "自动评价",
+  "version": "1",
+  "manifest_version": 2,
+  "permissions": [
+    "https://*.taobao.com/",
+    "*://*.tuling123.com/",
+    "storage",
+    "tabs",
+    "notifications"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.taobao.com/*"
       ],
-      "content_scripts": [
-        {
-          "matches": ["https://*.taobao.com/*"],
-          "js": [ "torate.js"]
-        }
+      "js": [
+        "torate.js"
       ]
+    }
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  }
 }
