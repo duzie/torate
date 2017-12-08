@@ -20,11 +20,8 @@ if(location.href.indexOf('remarkBuyer.jhtml') > 0){
 }
 
 if(location.href.indexOf('remarkBuyer.htm') > 0){
-    initjq();
-    if($('.msgok') != null){
-        window.location.href="about:blank";
-        window.close();
-    }
+    top.location.href='about:blank';
+    top.close();
 }
 
 
