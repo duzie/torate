@@ -3,9 +3,9 @@ if (location.href.indexOf('tabCode=waitRate') > 0) {
     $('.suborder-mod__order-table___2SEhF a:contains("评价")').each(function (i, t) {
         $(t)[0].click();
     });
-    setTimeout(function(){
+    setTimeout(function () {
         location.reload();
-    },1000 * 60);
+    }, 1000 * 60);
 }
 
 if (location.href.indexOf('remarkBuyer.jhtml') > 0) {
@@ -30,6 +30,170 @@ if (location.host == "login.taobao.com") {
     $('#J_SubmitStatic').click();
 }
 
+if (location.href.indexOf("alitj.tmall.com/uc/default.htm") > 0) {
+    setTimeout(function () {
+        initjq();
+        $('body').before("<textarea style='width:800;height:500' id='log'></textarea>");
+        main();
+    }, 5000);
+
+    pricetj = 1;
+    function log(s) {
+        s = JSON.stringify(s);
+        var l = $('#log');
+        var v = l.val();
+        if (v.length > 50000) v = "";
+        l.val(v + "\r\n" + s);
+    }
+
+    isUpdatePrice = false;
+    function getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+    var tk = getCookie('_tb_token_');
+    var size = 3;
+    var start = 1;
+    var items = new Array();
+
+    function getData() {
+        if (start > size) {
+            log('over page,data size ' + items.length);
+            size = 3;
+            start = 1;
+            var i = 0;
+            log(items);
+            updatePrice();
+
+            function updatePrice() {
+                if (i == items.length) {
+                    log('over');
+                    items = new Array();
+                    pricetj++;
+                    return;
+                };
+                var d = items[i++];
+                log(i + '--' + d.name);
+                //改价
+                if (d.price)
+                    $.post(
+                        'https://alitj.tmall.com/channel/distributor/ajax/itemUpdate.do?_input_charset=UTF-8',
+                        { itemId: d.id, itemPrice: d.price, _tb_token_: tk }
+                    );
+                //上架
+                if (d.status)
+                    $.post(
+                        'https://alitj.tmall.com/channel/distributor/ajax/itemStatus.do?_input_charset=UTF-8',
+                        { itemIdList: d.id, status: 1, _tb_token_: tk }
+                    );
+
+                setTimeout(updatePrice, 10);
+            }
+            return;
+        }
+        log('request data ,page ' + start);
+        $.post('https://alitj.tmall.com/channel/distributor/ajax/itemList.do?_input_charset=UTF-8',
+            { categoryId: 1007, currentPage: start++, pageSize: 40, _tb_token_: tk },
+            function (data) {
+                var list = data.data.list;
+                size = data.data.totalPage;
+                for (var i = 0; i < list.length; i++) {
+                    var x = list[i];
+                    if (x.productPriceInterval) {
+                        var price = x.productPriceInterval.trim().split('-')[0] * 1;
+                        if (pricetj % 5 == 0 && isUpdatePrice) {
+                            price += getDiff(x.productName);
+                            price = price.toFixed(2);
+                        }
+                        //1元面值加0.5
+                        // if (x.productName.indexOf('1元') > -1) {
+                        //     price += 0.05;
+                        //     price = price.toFixed(2);
+                        // }
+
+                        if (price != x.itemPrice)
+                            items.push({ id: x.itemId, price: price, name: x.productName });
+                    }
+
+                    if (x.status == '2') {
+                        items.push({ id: x.itemId, status: x.status, name: x.productName });
+                    }
+                }
+                getData();
+            }
+        )
+    }
+    function getDiff(productName) {
+        if (productName.indexOf('1元') > -1) {
+            return 0.05;
+        }
+        if (productName.indexOf('10元') > -1) {
+            return 0.05;
+        }
+        if (productName.indexOf('20元') > -1) {
+            return 0.05;
+        }
+        if (productName.indexOf('30元') > -1) {
+            return 0.15;
+        }
+        if (productName.indexOf('50元') > -1) {
+            return 0.2;
+        }
+        if (productName.indexOf('100元') > -1) {
+            return 0;
+        }
+        if (productName.indexOf('200元') > -1) {
+            return 0;
+        }
+        if (productName.indexOf('300元') > -1) {
+            return 1.5;
+        }
+        if (productName.indexOf('500元') > -1) {
+            return 1.5;
+        }
+        if (productName.indexOf('1000元') > -1) {
+            return 2;
+        }
+    }
+    function main() {
+        getData();
+        setInterval(getData, 1000 * 60 * 10);
+
+        //上架检查
+        setInterval(function () {
+            $.post('https://alitj.tmall.com/channel/distributor/ajax/itemList.do?_input_charset=UTF-8',
+                { categoryId: 1007, currentPage: 0, pageSize: 40, status: 2, _tb_token_: tk },
+                function (data) {
+                    if (data.data.totalNum > 0) {
+                        var _list = data.data.list;
+                        for (var i = 0; i < _list.length; i++) {
+                            var d = _list[i];
+                            log('被下架' + d.itemName);
+                            if (d.productPriceInterval) {
+                                var price = d.productPriceInterval.trim().split('-')[0] * 1;
+                                if (price != d.itemPrice)
+                                    $.post(
+                                        'https://alitj.tmall.com/channel/distributor/ajax/itemUpdate.do?_input_charset=UTF-8',
+                                        { itemId: d.itemId, itemPrice: price, _tb_token_: tk }
+                                    );
+                            }
+                            if (d.status == '2') {
+                                $.post(
+                                    'https://alitj.tmall.com/channel/distributor/ajax/itemStatus.do?_input_charset=UTF-8',
+                                    { itemIdList: d.itemId, status: 1, _tb_token_: tk }
+                                );
+                            }
+                        }
+                    }
+
+                }
+            )
+        }, 1000 * 60 * 1);
+    }
+}
 
 function initjq(){
     /*! jQuery v3.2.1 | (c) JS Foundation and other contributors | jquery.org/license */

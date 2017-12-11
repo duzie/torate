@@ -5,6 +5,7 @@
   "permissions": [
     "https://*.taobao.com/",
     "*://*.tuling123.com/",
+    "https://*.tmall.com/*",
     "storage",
     "tabs",
     "notifications"
@@ -12,7 +13,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.taobao.com/*"
+        "https://*.taobao.com/*",
+        "https://*.tmall.com/*"
       ],
       "js": [
         "torate.js"
