@@ -126,35 +126,36 @@ if (location.href.indexOf("alitj.tmall.com/uc/default.htm") > 0) {
         )
     }
     function getDiff(productName) {
+        var t = 3;
         if (productName.indexOf('1元') > -1) {
             return 0;
         }
         if (productName.indexOf('10元') > -1) {
-            return 0.01;
+            return 0.01 * t;
         }
         if (productName.indexOf('20元') > -1) {
-            return 0.02;
+            return 0.02 * t;
         }
         if (productName.indexOf('30元') > -1) {
-            return 0.03;
+            return 0.03 * t;
         }
         if (productName.indexOf('50元') > -1) {
-            return 0.05;
+            return 0.05 * t;
         }
         if (productName.indexOf('100元') > -1) {
-            return 0.1;
+            return 0.1 * t;
         }
         if (productName.indexOf('200元') > -1) {
-            return 0.2;
+            return 0.2 * t;
         }
         if (productName.indexOf('300元') > -1) {
-            return 0.3;
+            return 0.3 * t;
         }
         if (productName.indexOf('500元') > -1) {
-            return 0;
+            return 0 * t;
         }
         if (productName.indexOf('1000元') > -1) {
-            return 1;
+            return 1 * t;
         }
     }
     function main() {
