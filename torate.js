@@ -72,7 +72,6 @@ if (location.href.indexOf("alitj.tmall.com/uc/default.htm") > 0) {
                 if (i == items.length) {
                     log('over');
                     items = new Array();
-                    pricetj++;
                     return;
                 };
                 var d = items[i++];
@@ -104,7 +103,7 @@ if (location.href.indexOf("alitj.tmall.com/uc/default.htm") > 0) {
                     var x = list[i];
                     if (x.productPriceInterval) {
                         var price = x.productPriceInterval.trim().split('-')[0] * 1;
-                        if (pricetj % 5 == 0 && isUpdatePrice) {
+                        if (isUpdatePrice) {
                             price += getDiff(x.productName);
                             price = price.toFixed(2);
                         }
