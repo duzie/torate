@@ -46,7 +46,7 @@ if (location.href.indexOf("alitj.tmall.com/uc/default.htm") > 0) {
         l.val(v + "\r\n" + s);
     }
 
-    isUpdatePrice = false;
+    isUpdatePrice = true;
     function getCookie(name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
         if (arr = document.cookie.match(reg))
@@ -128,34 +128,34 @@ if (location.href.indexOf("alitj.tmall.com/uc/default.htm") > 0) {
     }
     function getDiff(productName) {
         if (productName.indexOf('1元') > -1) {
-            return 0.05;
+            return 0;
         }
         if (productName.indexOf('10元') > -1) {
-            return 0.05;
+            return 0.01;
         }
         if (productName.indexOf('20元') > -1) {
-            return 0.05;
+            return 0.02;
         }
         if (productName.indexOf('30元') > -1) {
-            return 0.15;
+            return 0.03;
         }
         if (productName.indexOf('50元') > -1) {
-            return 0.2;
+            return 0.05;
         }
         if (productName.indexOf('100元') > -1) {
-            return 0;
+            return 0.1;
         }
         if (productName.indexOf('200元') > -1) {
-            return 0;
+            return 0.2;
         }
         if (productName.indexOf('300元') > -1) {
-            return 1.5;
+            return 0.3;
         }
         if (productName.indexOf('500元') > -1) {
-            return 1.5;
+            return 0;
         }
         if (productName.indexOf('1000元') > -1) {
-            return 2;
+            return 1;
         }
     }
     function main() {
